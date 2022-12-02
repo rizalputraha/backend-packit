@@ -3,7 +3,7 @@ import Database from '@ioc:Adonis/Lucid/Database';
 
 export default class BaseController {
 
-  async getResponse (table: string, params, searchColumn: string) {
+  async paging (table: string, params, searchColumn: Array<string>) {
     var {keyword, page, limit, order, by} = params
 
     let keywordSearch: string = keyword ? `%${keyword}%` : '';
@@ -14,8 +14,16 @@ export default class BaseController {
 
     const query = await Database.query()
                               .from(table)
-                              .if(keywordSearch, (query) => {
-                                query.whereLike(searchColumn,keywordSearch)
+                              .if(keyword, (query) => {
+                                let q = query;
+                                searchColumn.forEach((element,index) => {
+                                  if (index == 0) {
+                                    q = q.whereILike(element, keywordSearch);
+                                  }else{
+                                    q = q.orWhereILike(element, keywordSearch);
+                                  }
+                                  return q
+                                });
                               })
                               .orderBy(paramsBy,paramsOrder)
                               .paginate(paramsPage,paramsLimit)

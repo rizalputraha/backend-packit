@@ -29,6 +29,9 @@ Route.group(() => {
   Route.post('/login','AuthController.login')
   Route.group(() => {
     Route.resource('/users','UsersController').except(['create','edit'])
+    Route.resource('/employees','EmployeesController')
+    Route.resource('/weights','WeightsController')
+    Route.resource('/reports','ReportWeightsController')
   }).middleware('auth')
 }).prefix('api')
 

@@ -10,9 +10,16 @@ export default class AuthController {
 
     try {
       const token = await auth.use('api').attempt(email,password)
-      return token
+      return {
+        error: false,
+        token: token.token,
+        type: token.type,
+      }
     } catch (error) {
-      return response.unauthorized('invalid credentials')
+      return response.unauthorized({
+        error: true,
+        message: 'silahkan cek password anda!'
+      })
     }
   }
 

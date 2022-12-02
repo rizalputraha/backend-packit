@@ -55,7 +55,7 @@ export default class AuthMiddleware {
     //   guardLastAttempted,
     //   this.redirectTo,
     // )
-    return {
+    throw {
       code: 400,
       error: true,
       message: "invalid bearer token"

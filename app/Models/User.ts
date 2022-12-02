@@ -3,6 +3,8 @@ import Hash from '@ioc:Adonis/Core/Hash'
 import { column, beforeSave, BaseModel } from '@ioc:Adonis/Lucid/Orm'
 
 export default class User extends BaseModel {
+  public static table
+
   @column({ isPrimary: true })
   public id: number
 
@@ -20,6 +22,9 @@ export default class User extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @column.dateTime({ columnName: 'customDeletedAtColumn' })
+  public deletedAt?: DateTime | null
 
   @beforeSave()
   public static async hashPassword (User: User) {
